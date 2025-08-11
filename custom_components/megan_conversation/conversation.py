@@ -30,11 +30,11 @@ class MeganAgent(AbstractConversationAgent):
 
     async def async_process(self, user_input: ConversationInput) -> ConversationResult:
         text = user_input.text or ""
-        payload = {"message": text, "top_k": 4}
+        payload = {"message": text}
         async with aiohttp.ClientSession() as session:
             async with session.post(self._api, json=payload, timeout=60) as resp:
                 data = await resp.json()
-        speak = data.get("reply", "I didn't catch that.")
+        speak = data.get("reply", "I didn’t catch that.")
         return ConversationResult(response=speak)
 
 async def async_get_agent(hass: HomeAssistant, config: dict[str, Any]) -> MeganAgent:
